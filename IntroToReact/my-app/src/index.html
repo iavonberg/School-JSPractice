@@ -11,86 +11,32 @@
 
 </head>
 <body>
-    <ul class="js-root"></ul>
+    <ul class="js-content"></ul>
 <script type="text/babel">
-
-function Header(props) {
+function App() {
+    const [firstLight, setFirstLight] = React.useState(false);
+    const [secondLight, setSecondLight] = React.useState(false);
+    const firstText = firstLight ? "On" : "Off";
+    const secondText = secondLight ? "On" : "Off";
     return (
-        <div>
-            <h1>WELCOME TO REACT TRANSPORATION</h1>
-            <p>The best place to buy vehicles online</p>
+        <div className="App">
+            <button onClick={ () => setFirstLight(!firstLight)}>
+                First Switch
+            </button>
+            <button onClick={ () => setSecondLight(!secondLight)}>
+                Second Switch
+            </button>
+            <p>First Light: {firstText}</p>
+            <p>Second Light: {secondText}</p>
         </div>
-    )
+    );
 }
 
-function Sections(props) {
-    return (
-        <h2>{props.sectionTitle}</h2>
-    )
-}
- 
-function Choose(props) {
-    return(
-        <div>
-        <Sections sectionTitle = {props.sectionTitle}/>
-        <p>New Only <input type="checkbox"/></p>
-        <p>Select Type <select>
-            <option>{props.value[0]} </option>
-            <option>{props.value[1]} </option>
-            <option>{props.value[2]}</option>
-            <option>{props.value[3]}</option>
-            </select>
-            </p>
-        </div>
-    )
-}
+ReactDOM.render(
+    <App />,
+    document.querySelector('.js-content')
+);
 
-function TableTab(props) {
-    return (
-        <table>
-            <tr background-color="grey">
-                <th>Year</th>
-                <th>Model</th>
-                <th>Price</th>
-                <th>Buy</th>
-            </tr>
-            <tr>
-                <td>{props.year}</td>
-                <td>{props.model}</td>
-                <td>{props.price}</td>
-                <td><button>Buy Now</button></td>
-            </tr>
-        </table>
-
-
-    )
-}
-
-function VehicleApp(props) {
-    return(
-        <div>
-        <Header/>
-        <Choose value={["All", "Car", "Truck", "Convertible"]} sectionTitle="Choose Options"/>
-        <Sections sectionTitle="Cars"/>
-        <TableTab year="2013" model="A" price="$32000"/>
-        <TableTab year="2011" model="B" price="$44000"/>
-        <TableTab year="2016" model="B" price="$155000"/>
-        <Sections sectionTitle="Trucks"/>
-        <TableTab year="2014" model="D" price="$18000"/>
-        <TableTab year="2013" model="E" price="$5200"/>
-        <Sections sectionTitle="Convertibles"/>
-        <TableTab year="2009" model="F" price="$2000"/>
-        <TableTab year="2010" model="G" price="$6000"/>
-        <TableTab year="2012" model="H" price="$12500"/>
-        <TableTab year="2017" model="M" price="$50000"/>
-    </div>
-    )
-    }
-
-ReactDOM.render (
-<VehicleApp/>,
-    document.querySelector(".js-root")
-)
 </script>
 </body>
 </html>
