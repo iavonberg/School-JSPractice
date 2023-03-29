@@ -14,47 +14,81 @@
     <ul class="js-root"></ul>
 <script type="text/babel">
 
-function ShoppingTitle(props) {
+function Header(props) {
     return (
         <div>
-            <h1>{props.title}</h1>
-            <h2>Total Number of Items: {props.numItems}</h2>
+            <h1>WELCOME TO REACT TRANSPORATION</h1>
+            <p>The best place to buy vehicles online</p>
         </div>
     )
 }
 
-function ListItem(props) {
+function Sections(props) {
     return (
-        <li>{props.item}</li>
-        )
+        <h2>{props.sectionTitle}</h2>
+    )
 }
-
-function ShoppingList(props) {
-    return (
+ 
+function Choose(props) {
+    return(
         <div>
-        <h3>{props.section}</h3>
-        <ol>
-            <ListItem item = {props.item[0]}/>
-            <ListItem item = {props.item[1]}/>
-            <ListItem item = {props.item[2]}/>
-        </ol>
+        <Sections sectionTitle = {props.sectionTitle}/>
+        <p>New Only <input type="checkbox"/></p>
+        <p>Select Type <select>
+            <option>{props.value[0]} </option>
+            <option>{props.value[1]} </option>
+            <option>{props.value[2]}</option>
+            <option>{props.value[3]}</option>
+            </select>
+            </p>
         </div>
     )
 }
 
-function ShoppingApp (props) {
+function TableTab(props) {
     return (
-    <div>
-        <ShoppingTitle title="My Shopping List" numItems="9"/>
-        <ShoppingList section="Food" item={["Apple","Bread","Cheese"]}/>
-        <ShoppingList section="Clothes" item={["Shirt","Pants","Hat"]}/>
-        <ShoppingList section="Supplies" item={["Pen","Paper","Glue"]}/>
+        <table>
+            <tr background-color="grey">
+                <th>Year</th>
+                <th>Model</th>
+                <th>Price</th>
+                <th>Buy</th>
+            </tr>
+            <tr>
+                <td>{props.year}</td>
+                <td>{props.model}</td>
+                <td>{props.price}</td>
+                <td><button>Buy Now</button></td>
+            </tr>
+        </table>
+
+
+    )
+}
+
+function VehicleApp(props) {
+    return(
+        <div>
+        <Header/>
+        <Choose value={["All", "Car", "Truck", "Convertible"]} sectionTitle="Choose Options"/>
+        <Sections sectionTitle="Cars"/>
+        <TableTab year="2013" model="A" price="$32000"/>
+        <TableTab year="2011" model="B" price="$44000"/>
+        <TableTab year="2016" model="B" price="$155000"/>
+        <Sections sectionTitle="Trucks"/>
+        <TableTab year="2014" model="D" price="$18000"/>
+        <TableTab year="2013" model="E" price="$5200"/>
+        <Sections sectionTitle="Convertibles"/>
+        <TableTab year="2009" model="F" price="$2000"/>
+        <TableTab year="2010" model="G" price="$6000"/>
+        <TableTab year="2012" model="H" price="$12500"/>
+        <TableTab year="2017" model="M" price="$50000"/>
     </div>
     )
-}
+    }
 
 ReactDOM.render (
-    <ShoppingApp/>,
+<VehicleApp/>,
     document.querySelector(".js-root")
 )
 </script>
