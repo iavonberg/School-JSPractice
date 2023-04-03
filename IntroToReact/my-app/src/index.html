@@ -14,105 +14,121 @@
     <ul class="js-content"></ul>
 <script type="text/babel">
 
-class Game extends React.Component {
-    constructor(props) {
+class App extends React.Component {
+    constructor(props){
         super(props)
         this.state = {
-            num1: Math.floor(Math.random() * 11),
-            num2: Math.floor(Math.random() * 11),
-            answer1: Math.floor(Math.random() * 101),
-            answer2: Math.floor(Math.random() * 101),
-            answer3: Math.floor(Math.random() * 101),
-            correctCount: 0,
-            incorrectCount: 0,
+            value: "",
+            items: []
         }
-        this.clickHandler = this.clickHandler.bind(this)
     }
 
-    clickHandler(id, prevState) {
-        if(id === 1) {
-           this.setState((prevState) => {
-            return {correctCount: prevState.correctCount + 1}
-        })
-    } else {
-        this.setState((prevState) => {
-            return {incorrectCount: prevState.incorrectCount +1}
-        })
-    }
+        handleChange(event){
+            this.setState({value:event.target.value})
+            console.log(this.state.value)
+        }
 
-    this.setState((prevState) => {
-        return{num1:Math.floor(Math.random() * 11)}
-    })
+        addItem() {
+            var itemsCopy = this.state.items.slice()
+            var truncatedString = this.state.value.substring(0,20);
+            itemsCopy.push({"title": truncatedString, "score":0})
+            itemsCopy.sort((a,b) => {
+                return b.score - a.score;
+            })
+            this.setState({items:itemsCopy, value:""})
+        }
 
-    this.setState((prevState) => {
-        return{num2:Math.floor(Math.random() * 11)}
-    })
+        updateScore(index, val){
+            var itemsCopy = this.state.items.slice()
+            itemsCopy[index].score += val
+            itemsCopy.sort((a,b) => {
+                return b.score - a.score
+            })
+            this.setState({items:itemsCopy})
+        }
 
-    this.setState((prevState) => {
-        return{answer1:Math.floor(Math.random() * 101)}
-    })
-
-    this.setState((prevState) => {
-        return{answer2:Math.floor(Math.random() * 101)}
-    })
-
-    this.setState((prevState) => {
-        return{answer3:Math.floor(Math.random() * 101)}
-    })
-
-
-    }
+        removeItem(index) {
+            var itemsCopy = this.state.items.slice()
+            itemsCopy.splice(index,1);
+            itemsCopy.sort((a,b) => {
+                return b.score - a.score
+            })
+            this.setState({items: itemsCopy})
+        }
+    
     render() {
-        // let style = {
-        //     display: "flex",
-        //     flexWrap: "wrap",
-        // }
-        return (
+        return(
             <div>
-            <Question num1 = {this.state.num1} num2 = {this.state.num2}/>
-            <Answer id={0}clickHandler = {this.clickHandler} name={this.state.answer1}/>            
-            <Answer id={1} clickHandler = {this.clickHandler} name={(this.state.num1)*(this.state.num2)}/>
-            <Answer id={2} clickHandler = {this.clickHandler} name={this.state.answer2}/>            
-            <Answer id={3} clickHandler = {this.clickHandler} name={this.state.answer3}/>
-            <Score correctCount = {this.state.correctCount} incorrectCount = {this.state.incorrectCount}/>
+                <input value = {this.state.value} onChange = {this.handleChange.bind(this)}/>
+                <button onClick = { () => this.addItem()}>Submit</button>
+                <PostList postList = {this.state.items} updateScore = {this.updateScore.bind(this)}
+                removeItem = {this.removeItem.bind(this)}/>
             </div>
         )
     }
 }
 
 
-
-
-function Question(props) {
-    let style = {
-        color: "red",
-        width: 900,
+function PostButton(props){
+    var style = {
+        width: 24,
+        height: 24
     }
+
     return (
-        <h3 style={style}>What is {props.num1} x {props.num2}?</h3>
+        <button style={style} onClick = { () => props.handleClick()}>{props.label}</button>
     )
 }
 
-    class Answer extends React.Component {
-    render(){
-        return (
-                <button style = {{display: "block", width: "60%"}}onClick ={() => {this.props.clickHandler(this.props.id)}}>{this.props.name}</button>
-        )
-    }
+function PostText(props) {
+    var style = {
+        border:"1px solid black",
+        width: props.width
     }
 
-function Score (props) {
     return (
-        <div>
-            <p>Correct: {props.correctCount}</p>
-            <p>Incorrect: {props.incorrectCount}</p>
-        </div>
+        <div style={style}>{props.text}</div>
+    )
+}
+
+function Post(props) {
+    var style = {
+        display: "flex"
+    }
+return (
+    <div style={style}>
+        <PostButton label = "x" handleClick = {props.removeItem} />
+        <PostText text={props.title} width="200"/>
+        <PostButton label = "+" handleClick = {props.incrementScore}/>
+        <PostText text={props.score} width="20"/>
+        <PostButton label= "-" handleClick = {props.decrementScore}/>
+    </div>
+)
+}
+
+function PostList(props) {
+    return (
+        <p>
+            <ol>
+                {
+                    props.postList.map((item, index) =>
+                    <Post key = {index}
+                    title = {item.title}
+                    score = {item.score}
+                    incrementScore = {() => props.updateScore(index,1)}
+                    decrementScore = {() => props.updateScore(index,-1)}
+                    removeItem = {() => props.removeItem(index)}
+                    />
+                    )
+                }
+            </ol>
+        </p>
     )
 }
 
 
 ReactDOM.render(
-    <Game />,
+    <App/>,
     document.querySelector('.js-content')
 );
 
