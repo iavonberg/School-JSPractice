@@ -4,6 +4,8 @@ import NavBar from "./NavBar.jsx";
 import About from "./About.jsx";
 import Resume from "./Resume.jsx";
 import Error from "./Error.jsx";
+import Projects from "./Projects.jsx";
+import Contact from "./Contact.jsx";
 
 export default function App() {
   return (
@@ -14,8 +16,8 @@ export default function App() {
           <Route path="/about" element={<About/>} />
           <Route path="/" render={() => <redirect to="about"/>} />
           <Route path="/resume" element={<Resume/>} />
-          <Route path="/projects" component={null} />
-          <Route path="/contact" component={null} />
+          <Route path="/projects/*" element={<Projects/>}/>
+          <Route path="/contact" element={<Contact/>} />
           <Route component={Error} />
         </Routes>
       </div>
